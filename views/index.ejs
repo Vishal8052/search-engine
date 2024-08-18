@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Engine</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body style="background-image: url('tree-bg-img.jpg');">
+    <h1>Search Engine</h1>
+
+    <form>
+      <input type="text" name="question" id="question" />
+      <input type="submit" id="submit" value="Search" />
+    </form>
+
+    <div class="loading"></div>
+
+    <div class ='container'>
+
+      <div class="question">
+        <div class="title"></div>
+        <div class="body"></div>
+      </div>
+      
+      <div class="question">
+        <div class="title"></div>
+        <div class="body"></div>
+      </div>
+      
+      <div class="question">
+        <div class="title"></div>
+        <div class="body"></div>
+      </div>
+      
+      <div class="question">
+        <div class="title"></div>
+        <div class="body"></div>
+      </div>
+      
+      <div class="question">
+        <div class="title"></div>
+        <div class="body"></div>
+      </div>
+
+    </div>
+
+
+  </body>
+</html>
+
+<script>
+  const form = document.querySelector("form");
+  const questionElement = form.question;
+
+  const questions = document.querySelectorAll(".question");
+  const titles = document.querySelectorAll(".title");
+  // const urls = document.querySelectorAll(".url");
+  const quesBody = document.querySelectorAll(".body");
+  const loadingDiv = document.querySelector(".loading");
+
+   const id=[];
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const question = questionElement.value;
+    for (let i = 0; i < 5; i++) {
+      titles[i].innerHTML = ``;
+    }
+
+    loadingDiv.innerHTML = `Loading...`;
+    //fetch
+
+    try {
+      const res = await fetch(`/search?question=${question}`, {
+        method: "GET",
+      });
+      const data = await res.json();
+
+      loadingDiv.innerHTML = ``;
+
+      for (let i = 0; i < 5; i++) {
+        // titles[i].innerHTML = `<a href=${data[i].url}><h3>${data[i].title}</h3></a>${data[i].statement}</h3>`;
+        // titles[i].innerHTML = `<h2>${data[i].title}</h2>`;
+         titles[i].innerHTML = `<a href=${data[i].url} ><h2>${data[i].title}</h2></a>`;
+        // urls[i].innerHTML = `<a href=${data[i].url} target="_blank" rel="noreferrer noopener"><u>see_full</u></a>`; 
+
+        // quesBody[i].innerHTML=`<p>${data[i].statement}<a href=${data[i].url} target="_blank" rel="noreferrer noopener"><u>see_full</u></a></p>`;
+
+        quesBody[i].innerHTML = `<a href=${data[i].url}  ><p>${data[i].statement}</p></a>`;
+        id[i]= data[i].id_;
+      }
+
+    } catch (error) {
+      alert(error);
+    }
+  });
+</script>

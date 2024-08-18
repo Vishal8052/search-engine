@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Engine</title>
+    <base href="/">
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body style="background-image: url('bg-img.jpg')">
+    
+    <div class="site-title">
+        <h1 class="texture" style="font-size: 25px"><%= title %></h1>
+    </div>
+
+    <div class="details content">
+        <div class="content">
+            <p>
+                <%-content%>
+            </p>
+        </div>
+    </div>
+    <br />
+
+    <div style="font-size: 20px;"><a href="<%= url %>" target="_blank">Link to editor</a></div>
+
+</body>
