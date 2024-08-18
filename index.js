@@ -38,7 +38,11 @@ app.get("/search", (req, res) => {
 
     //Array of queries
     const input_array = question.split(" ");
-    const titles = fs.readFileSync('./docs/titles.txt','utf8').replace(/\r\n/g,'\n').split('\n');
+    const titlesPath = path.join(__dirname, "docs", "titles.txt");
+    const titles = fs
+      .readFileSync(titlesPath, "utf8")
+      .replace(/\r\n/g, "\n")
+      .split("\n");
     // console.log(titles.length)
     const arr=[];
 
@@ -53,7 +57,13 @@ app.get("/search", (req, res) => {
             if(titleString.includes(question)){
             const idx=j+1;
             const url = "/problem/"+idx+"/";
-            const line = fs.readFileSync('./docs/probs/'+idx+'.txt' ,'utf8').split('\n').shift();
+            const filePath = path.join(
+              __dirname,
+              "docs",
+              "probs",
+              `${idx}.txt`
+            );
+            const line = fs.readFileSync(filePath, "utf8").split("\n").shift();
             objj={
               id_: idx,
               title: titles[idx-1],
@@ -70,7 +80,11 @@ app.get("/search", (req, res) => {
        
 
     //Get all the keywords
-    var keywords = fs.readFileSync('./docs/All_Keywords.txt','utf8').replace(/(\r\n|\n|\r)/gm, " ");
+    const keywordsPath = path.join(__dirname, "docs", "All_Keywords.txt");
+    var keywords = fs
+      .readFileSync(keywordsPath, "utf8")
+      .replace(/(\r\n|\n|\r)/gm, " ");
+
     const all_keywords = keywords.split(' ');
 
     //count the number of occurences
@@ -110,13 +124,13 @@ app.get("/search", (req, res) => {
     
 
     
-
-    var idf_string = fs.readFileSync('./docs/IDF-MATRIX.txt','utf8').replace(/(\r\n|\n|\r)/gm, " ");
+    const idfPath = path.join(__dirname, "docs", "IDF-MATRIX.txt");
+    var idf_string = fs
+      .readFileSync(idfPath, "utf8")
+      .replace(/(\r\n|\n|\r)/gm, " ");
     const idf=idf_string.split(' ');
 
-    // console.log(idf);
   
-
    //Now calculate TD-IDF value of the query string
 
     const tfIdf=[];
@@ -133,11 +147,10 @@ app.get("/search", (req, res) => {
     }
 
     
-    // console.log(tfIdf);
+  
     //get the tf-idf values of the dataset
-
-    var tfidfss = fs.readFileSync('./docs/tf-idf-data-set.txt','utf8').split('\n');
-    // console.log(tfidfss.length);
+    const tfidfPath = path.join(__dirname, "docs", "tf-idf-data-set.txt");
+    var tfidfss = fs.readFileSync(tfidfPath, "utf8").split("\n");
 
     var tfidfs=[];
 
@@ -196,7 +209,8 @@ app.get("/search", (req, res) => {
   {
     const idx = cosine[i].second;
     const url = "/problem/"+idx+"/";
-    const line = fs.readFileSync('./docs/probs/'+idx+'.txt' ,'utf8').split('\n').shift();
+    const problemFilePath = path.join(__dirname, "docs", "probs", idx + ".txt");
+    const line = fs.readFileSync(problemFilePath, "utf8").split("\n").shift();
 
     const obj={
         id_: idx,
@@ -210,8 +224,6 @@ app.get("/search", (req, res) => {
 
 
   //List of 5 questions
-  //  console.log(arr);
-  //  console.log(cosine);
   
   setTimeout(() => {
     res.json(arr);
@@ -221,20 +233,33 @@ app.get("/search", (req, res) => {
 
 app.get("/problem/:id",(req,res)=>
 {
-  // var id = req.params.id;
-  // console.log(id);
-  // var problemText =  fs.readFileSync('./docs/probs/'+id+'.txt','utf8').toString();
+  
      try{
       var id = req.params.id;
-      
-      var titleArray = fs.readFileSync('./docs/titles.txt','utf8').replace(/\r\n/g,'\n').split('\n');
+      const titlesPath = path.join(__dirname, "docs", "titles.txt");
+      var titleArray = fs
+        .readFileSync(titlesPath, "utf8")
+        .replace(/\r\n/g, "\n")
+        .split("\n");
+  
       
       var tit = titleArray[id-1];
 
-      var siteArray = fs.readFileSync('./docs/links.txt','utf8').replace(/(\r\n|\n|\r)/gm, " ").split(' ');
+      const linksPath = path.join(__dirname, "docs", "links.txt");
+      var siteArray = fs
+        .readFileSync(linksPath, "utf8")
+        .replace(/(\r\n|\n|\r)/gm, " ")
+        .split(" ");
+  
       var site = siteArray[id-1];
 
-      var problemText =  fs.readFileSync('./docs/probs/'+id+'.txt','utf8').toString();
+      const problemByIdPath = path.join(
+        __dirname,
+        "docs",
+        "probs",
+        id + ".txt"
+      );
+      var problemText = fs.readFileSync(problemByIdPath, "utf8").toString();
 
     function decode_utf8(s) {
       return decodeURIComponent(escape(s));
