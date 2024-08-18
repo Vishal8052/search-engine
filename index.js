@@ -11,6 +11,7 @@ app.use(express.json());
 //Setting Up EJS
 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));  // Ensure the views directory is set
 
 app.use(express.static(path.join(__dirname, "/public")));
 
